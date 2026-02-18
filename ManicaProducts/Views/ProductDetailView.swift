@@ -11,32 +11,34 @@ struct ProductDetailView: View {
     let product: Product
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Image(product.image)
-                .resizable()
-                .scaledToFill()
-                .frame(height: 250)
-                .clipped()
-            
-            Group {
-                Text(product.title)
-                    .font(.title3)
-                    .fontWeight(.semibold)
+        ScrollView {
+            VStack(alignment: .leading) {
+                Image(product.image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 250)
+                    .clipped()
                 
-                Text(product.description)
-                    .font(.subheadline)
-                
-                
-                Button {
+                Group {
+                    Text(product.title)
+                        .font(.title3)
+                        .fontWeight(.semibold)
                     
-                } label: {
-                    Text("Add to Cart")
+                    Text(product.description)
+                        .font(.subheadline)
+                        .padding(.bottom, 15)
+                    
+                    Button {
+                        
+                    } label: {
+                        Text("Add to Cart")
+                    }
+                    .buttonStyle(PrimaryButtonStyle())
                 }
-                .buttonStyle(PrimaryButtonStyle())
+                .padding(.horizontal)
+                
+                Spacer()
             }
-            .padding(.horizontal)
-            
-            Spacer()
         }
     }
 }
