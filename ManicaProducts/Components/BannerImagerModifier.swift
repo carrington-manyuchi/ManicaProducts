@@ -12,7 +12,9 @@ extension Image {
         self
             .resizable()
             .scaledToFit()
+            .frame(maxWidth: .infinity)
             .frame(height: 250)
+            .clipped()
     }
 }
 

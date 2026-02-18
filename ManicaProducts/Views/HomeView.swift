@@ -23,13 +23,13 @@ struct HomeView: View {
                 ZStack {
                     Image(systemName: "cart.fill")
                         .foregroundStyle(.black)
-                    ZStack {
-                        Circle()
+                    
                         Text("1")
                             .foregroundStyle(.white)
-                            .font(.system(size: 14))
-                    }
-                    .offset(CGSize(width: 10, height: -10))
+                            .font(.system(size: 12))
+                            .frame(width: 18, height: 18)
+                            .background(Circle().fill(Color.red))
+                            .offset(x: 10, y: -10)
                 }
             }
             .padding(.trailing)
@@ -38,58 +38,72 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                NavigationBarview
-                Image("banner")
-                    .bannerImageStyle()
-                HStack {
-                    Text("Featured")
-                        .font(.system(size: 15, weight: .semibold))
-                    
-                    Spacer()
-                    NavigationLink {
-                        ProductGridView()
-                    } label: {
-                        Text("View All")
-                            .font(.system(size: 15, weight: .bold))
-                    }
-                }
-                .padding(.horizontal)
-                
-                ScrollView(.horizontal) {
+            ScrollView {
+                VStack {
+                    NavigationBarview
+                    Image("banner")
+                        .bannerImageStyle()
                     HStack {
-                        ForEach(viewModel.fetchProducts(filter: .isFeatured)) { product in
-                            ProductRow(product: product)
+                        Text("Featured")
+                            .font(.system(size: 15, weight: .semibold))
+                        
+                        Spacer()
+                        NavigationLink {
+                            ProductGridView(filter: .isFeatured)
+                        } label: {
+                            Text("View All")
+                                .font(.system(size: 15, weight: .bold))
                         }
                     }
-                }
-                .padding()
-                .scrollIndicators(.hidden)
-                
-                HStack {
-                    Text("Highly Rated")
-                        .font(.system(size: 15, weight: .semibold))
+                    .padding(.horizontal)
                     
-                    Spacer()
-                    NavigationLink {
-                        ProductGridView()
-                    } label: {
-                        Text("View All")
-                            .font(.system(size: 15, weight: .bold))
-                    }
-                }
-                .padding(.horizontal)
-                
-                ScrollView(.horizontal) {
-                    HStack {
-                        ForEach(viewModel.fetchProducts(filter: .highlyRated)) { product in
-                            ProductRow(product: product)
+                    ScrollView(.horizontal) {
+                        HStack {
+                            ForEach(viewModel.fetchProducts(filter: .isFeatured)) { product in
+                                ProductRow(product: product)
+                            }
                         }
                     }
+                    .padding()
+                    .scrollIndicators(.hidden)
+                    
+                    HStack {
+                        Text("Highly Rated")
+                            .font(.system(size: 15, weight: .semibold))
+                        
+                        Spacer()
+                        NavigationLink {
+                            ProductGridView(filter: .highlyRated)
+                        } label: {
+                            Text("View All")
+                                .font(.system(size: 15, weight: .bold))
+                        }
+                    }
+                    .padding(.horizontal)
+                    
+                    ScrollView(.horizontal) {
+                        HStack {
+                            ForEach(viewModel.fetchProducts(filter: .highlyRated)) { product in
+                                ProductRow(product: product)
+                            }
+                        }
+                    }
+                    .padding()
+                    .scrollIndicators(.hidden)
+                    
+                    Button {
+                        viewModel.showAllProducts = true
+                    } label: {
+                        Text("See Full Catalog")
+                    }
+                    .buttonStyle(PrimaryButtonStyle())
+                    .padding(.horizontal)
+
+                    Spacer()
                 }
-                .padding()
-                .scrollIndicators(.hidden)
-                Spacer()
+            }
+            .navigationDestination(isPresented: $viewModel.showAllProducts) {
+                ProductGridView(filter: .all)
             }
         }
     }

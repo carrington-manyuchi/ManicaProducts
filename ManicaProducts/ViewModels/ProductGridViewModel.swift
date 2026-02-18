@@ -1,21 +1,19 @@
 //
-//  HomeviewModel.swift
+//  ProductGridViewModel.swift
 //  ManicaProducts
 //
-//  Created by Manyuchi, Carrington C on 2026/02/17.
+//  Created by Manyuchi, Carrington C on 2026/02/18.
 //
 
 import SwiftUI
 import Observation
 
 @Observable
-class HomeviewModel {
+class ProductGridViewModel {
+    let filter: ProductFilter
     
-    var showAllProducts: Bool = false
-    
-    func fetchProducts(filter: ProductFilter) -> [Product] {
+    var products: [Product] {
         switch filter {
-            
         case .all:
             ProductsClient.fetchProducts()
         case .isFeatured:
@@ -23,5 +21,9 @@ class HomeviewModel {
         case .highlyRated:
             ProductsClient.fetchProducts().filter { $0.rating > 4 }
         }
+    }
+    
+    init(filter: ProductFilter) {
+        self.filter = filter
     }
 }
