@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct HomeView: View {
+    @Environment(FavoritesManager.self) var favoritesManager: FavoritesManager
     @State var viewModel = HomeviewModel()
+    
     fileprivate var NavigationBarview: some View {
         HStack {
             Spacer()
@@ -111,4 +113,5 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
+        .environment(FavoritesManager())
 }

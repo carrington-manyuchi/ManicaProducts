@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FavoritesView: View {
-    @State var viewModel = FavoritesViewModel()
+    @Environment(FavoritesManager.self) var favoritesManager: FavoritesManager
     
     fileprivate func FavoriteProductRow(product: Product) -> some View {
         HStack {
@@ -25,7 +25,7 @@ struct FavoritesView: View {
                     .font(.subheadline)
             }
             Button {
-             //MARK: - TODO
+                favoritesManager.products.removeAll(where: { $0.id == product.id })
             } label: {
                 Image(systemName: "heart.fill")
             }
@@ -34,8 +34,13 @@ struct FavoritesView: View {
     
     var body: some View {
         VStack {
-            List(viewModel.products) { product in
+            List(favoritesManager.products) { product in
                 FavoriteProductRow(product: product)
+            }
+        }
+        .overlay {
+            if favoritesManager.products.count == 0 {
+                Text("Nothing to see here")
             }
         }
     }
@@ -43,4 +48,5 @@ struct FavoritesView: View {
 
 #Preview {
     FavoritesView()
+        .environment(FavoritesManager())
 }

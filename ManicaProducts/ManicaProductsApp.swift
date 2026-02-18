@@ -8,7 +8,9 @@
 import SwiftUI
 
 @main
-struct ManicaProductsApp: App {
+struct ManicaProductsApp: App {    
+    @State var favoritesManager = FavoritesManager()
+    
     var body: some Scene {
         WindowGroup {
             TabView {
@@ -28,6 +30,7 @@ struct ManicaProductsApp: App {
                         Text("Favorites")
                     }
             }
+            .environment(favoritesManager)
             .preferredColorScheme(.light)
         }
     }
