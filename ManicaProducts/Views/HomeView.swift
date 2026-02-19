@@ -9,6 +9,8 @@ import SwiftUI
 
 struct HomeView: View {
     @Environment(FavoritesManager.self) var favoritesManager: FavoritesManager
+    @Environment(CartManager.self) var cartManager: CartManager
+    @Environment(TabManager.self) var  tabManager: TabManager
     @State var viewModel = HomeviewModel()
     
     fileprivate var NavigationBarview: some View {
@@ -20,18 +22,19 @@ struct HomeView: View {
         }
         .overlay(alignment: .trailing) {
             Button {
-                //MARK: - TODO
+                tabManager.selectedTab = 2
             } label: {
                 ZStack {
                     Image(systemName: "cart.fill")
                         .foregroundStyle(.black)
-                    
-                        Text("1")
+                    if cartManager.displayTotalCartQuantity > 0 {
+                        Text("\(cartManager.displayTotalCartQuantity)")
                             .foregroundStyle(.white)
                             .font(.system(size: 12))
                             .frame(width: 18, height: 18)
                             .background(Circle().fill(Color.red))
                             .offset(x: 10, y: -10)
+                    }
                 }
             }
             .padding(.trailing)
@@ -114,4 +117,6 @@ struct HomeView: View {
 #Preview {
     HomeView()
         .environment(FavoritesManager())
+        .environment(CartManager())
+        .environment(TabManager())
 }

@@ -8,7 +8,6 @@
 import Foundation
 
 enum ProductFilter {
-
     case all
     case isFeatured
     case highlyRated

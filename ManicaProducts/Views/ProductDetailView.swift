@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct ProductDetailView: View {
+    @Environment(CartManager.self) var cartManager: CartManager
     let product: Product
     
     var body: some View {
+        @Bindable var cartManager = cartManager
         ScrollView {
             VStack(alignment: .leading) {
                 Image(product.image)
@@ -29,7 +31,8 @@ struct ProductDetailView: View {
                         .padding(.bottom, 15)
                     
                     Button {
-                        
+                        cartManager.addToCart(product: product)
+                        cartManager.addToCartAlert = true
                     } label: {
                         Text("Add to Cart")
                     }
@@ -39,6 +42,14 @@ struct ProductDetailView: View {
                 
                 Spacer()
             }
+            .alert("Added To Cart", isPresented: $cartManager.addToCartAlert) {
+                Button("Ok") {
+                    
+                }
+            } message: {
+                Text("You have added \(product.title) to your cart")
+            }
+
         }
     }
 }
@@ -46,5 +57,6 @@ struct ProductDetailView: View {
 
 #Preview {
     ProductDetailView(product: ProductsClient.fetchProducts()[0])
+        .environment(CartManager())
 }
 
